@@ -1,7 +1,7 @@
 # Environment variables
 PATH="$PATH:/usr/local/bin"
 APP_NAME="Petclinic"
-ANS_KEYPAIR="Call-$APP_NAME-dev-${BUILD_NUMBER}.key"
+ANS_KEYPAIR="gulcin-$APP_NAME-dev-${BUILD_NUMBER}.key"
 AWS_REGION="us-east-1"
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${ANS_KEYPAIR}"
 export ANSIBLE_HOST_KEY_CHECKING=False
