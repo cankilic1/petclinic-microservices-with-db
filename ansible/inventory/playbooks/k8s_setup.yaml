@@ -1,3 +1,4 @@
+---
 - hosts: all
   become: true
   tasks:
@@ -161,4 +162,4 @@
   - name: create StorageClass object
     become: false
     shell: kubectl apply -f storage.yml
-    
+```
