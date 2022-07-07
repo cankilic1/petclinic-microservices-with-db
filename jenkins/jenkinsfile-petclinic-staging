@@ -3,15 +3,15 @@ pipeline {
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
         APP_NAME="petclinic"
-        APP_REPO_NAME="clarusway-repo-dt/petclinic-app-staging"
+        APP_REPO_NAME="clarusway-repo/petclinic-app-staging"
         AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
         AWS_REGION="us-east-1"
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         RANCHER_URL="https://rancher.gulcincankilic.com"
         // Get the project-id from Rancher UI (projects/namespaces --> petclinic-cluster-staging namespace --> Edit yaml --> copy projectId )
-        RANCHER_CONTEXT="petclinic-cluster:project-id" 
+        RANCHER_CONTEXT="c-sjzp6:p-9vhqk" 
        //First part of projectID
-        CLUSTERID="petclinic-cluster"
+        CLUSTERID="c-sjzp6"
         RANCHER_CREDS=credentials('rancher-petclinic-credentials')
     }
     stages {
@@ -74,9 +74,9 @@ pipeline {
                 sh "rm -f k8s/config"
                 sh "rancher cluster kf $CLUSTERID > k8s/config"
                 sh "chmod 400 k8s/config"
-                sh "helm repo add stable-petclinic s3://petclinic-helm-charts/stable/myapp/"
+                sh "helm repo add stable-petclinic s3://petclinic-helm-charts-gulcin/stable/myapp/"
                 sh "helm package k8s/petclinic_chart"
-                sh "helm s3 push petclinic_chart-${BUILD_NUMBER}.tgz stable-petclinic"
+                sh "helm s3 push --force petclinic_chart-${BUILD_NUMBER}.tgz stable-petclinic"
                 sh "helm repo update"
                 sh "AWS_REGION=$AWS_REGION helm upgrade --install petclinic-app-release stable-petclinic/petclinic_chart --version ${BUILD_NUMBER} --namespace petclinic-staging-ns --kubeconfig k8s/config"
             }
