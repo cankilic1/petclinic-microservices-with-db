@@ -73,6 +73,18 @@
 
         </dependencies>
     </dependencyManagement>
+    <distributionManagement>
+  <repository>
+    <id>nexus</id>
+    <name>maven-releases</name>
+    <url>http://172.31.84.62:8081/repository/maven-releases/</url>
+  </repository>
+  <snapshotRepository>
+    <id>nexus</id>
+    <name>maven-snapshots</name>
+    <url>http://172.31.84.62:8081/repository/maven-snapshots/</url>
+  </snapshotRepository>
+</distributionManagement>
 
     <profiles>
         <profile>
@@ -86,6 +98,26 @@
             <build>
                 <plugins>
                     
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.2</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <!-- attached to Maven test phase -->
+                            <execution>
+                                <id>report</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
